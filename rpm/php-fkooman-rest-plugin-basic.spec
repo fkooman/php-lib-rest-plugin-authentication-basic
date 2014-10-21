@@ -6,7 +6,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    0.2.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
 Group:      System Environment/Libraries
@@ -17,7 +17,7 @@ BuildArch:  noarch
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
-Requires:   php >= 5.3.3
+Requires:   php >= 5.4
 
 Requires:   php-password-compat >= 1.0.0
 Requires:   php-composer(fkooman/rest) >= 0.6.0
@@ -42,6 +42,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Tue Oct 21 2014 François Kooman <fkooman@tuxed.net> - 0.2.1-3
+- require PHP >= 5.4
+
 * Tue Oct 21 2014 François Kooman <fkooman@tuxed.net> - 0.2.1-2
 - require php-password-compat
 
