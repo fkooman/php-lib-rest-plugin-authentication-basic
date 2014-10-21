@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "57ca99781525468d9b755a6df71e79e7",
+    "hash": "c896e32fe2571bcbc4178c746ec8fe21",
     "packages": [
         {
             "name": "fkooman/json",
@@ -45,21 +45,24 @@
         },
         {
             "name": "fkooman/rest",
-            "version": "dev-master",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkooman/php-lib-rest.git",
-                "reference": "514103ec6b66c607741b61b5eb9fb3d937185187"
+                "reference": "5dcc3136f848922f11790660aec1405d0dcdc644"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/514103ec6b66c607741b61b5eb9fb3d937185187",
-                "reference": "514103ec6b66c607741b61b5eb9fb3d937185187",
+                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/5dcc3136f848922f11790660aec1405d0dcdc644",
+                "reference": "5dcc3136f848922f11790660aec1405d0dcdc644",
                 "shasum": ""
             },
             "require": {
                 "fkooman/json": "~0.5.1",
                 "php": ">=5.3.3"
+            },
+            "suggest": {
+                "fkooman/rest-plugin-basic": "Basic Authentication plugin for Service"
             },
             "type": "library",
             "autoload": {
@@ -80,7 +83,7 @@
                 }
             ],
             "description": "Simple PHP library for writing REST services.",
-            "time": "2014-10-21 08:01:50"
+            "time": "2014-10-21 16:30:51"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -125,9 +128,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "fkooman/rest": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "platform": {
         "php": ">=5.4"
