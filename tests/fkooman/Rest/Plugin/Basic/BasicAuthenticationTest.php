@@ -37,7 +37,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException fkooman\Http\Exception\UnauthorizedException
-     * @expectedExceptionMessage invalid credentials
+     * @expectedExceptionMessage invalid_credentials
      */
     public function testBasicAuthWrongUser()
     {
@@ -51,7 +51,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException fkooman\Http\Exception\UnauthorizedException
-     * @expectedExceptionMessage invalid credentials
+     * @expectedExceptionMessage invalid_credentials
      */
     public function testBasicAuthWrongPass()
     {

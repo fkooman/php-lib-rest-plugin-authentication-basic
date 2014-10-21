@@ -51,7 +51,14 @@ class BasicAuthentication implements ServicePluginInterface
 
         // the password verification is secure against timing attacks
         if (!password_verify($requestBasicAuthPass, $this->basicAuthPass) || !$validUser) {
-            throw new UnauthorizedException('invalid credentials', 'Basic', array('realm' => $this->basicAuthRealm));
+            throw new UnauthorizedException(
+                'invalid_credentials',
+                'supplied username or password are invalid',
+                'Basic',
+                array(
+                    'realm' => $this->basicAuthRealm,
+                )
+            );
         }
 
         return new BasicUserInfo($this->basicAuthUser);
