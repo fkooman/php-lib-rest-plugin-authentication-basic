@@ -1,0 +1,22 @@
+{
+    "authors": [
+        {
+            "email": "fkooman@tuxed.net",
+            "name": "Fran\u00e7ois Kooman",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "fkooman\\Rest\\Plugin\\Basic": "src/"
+        }
+    },
+    "description": "Basic Authentication plugin for fkooman/rest",
+    "license": "Apache-2.0",
+    "name": "fkooman/rest-plugin-basic",
+    "require": {
+        "fkooman/rest": "dev-master",
+        "ircmaxell/password-compat": "~1.0",
+        "php": ">=5.4"
+    }
+}
