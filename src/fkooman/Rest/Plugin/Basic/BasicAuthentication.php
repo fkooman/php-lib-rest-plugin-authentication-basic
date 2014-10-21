@@ -33,7 +33,7 @@ class BasicAuthentication implements ServicePluginInterface
     /** @var string */
     private $basicAuthRealm;
 
-    public function __construct($basicAuthUser, $basicAuthPass, $basicAuthRealm = "Protected Resource")
+    public function __construct($basicAuthUser, $basicAuthPass, $basicAuthRealm = 'Protected Resource')
     {
         $this->basicAuthUser = $basicAuthUser;
         $this->basicAuthPass = $basicAuthPass;
@@ -45,14 +45,15 @@ class BasicAuthentication implements ServicePluginInterface
         $requestBasicAuthUser = $request->getBasicAuthUser();
         $requestBasicAuthPass = $request->getBasicAuthPass();
 
-        if ($this->basicAuthUser !== $requestBasicAuthUser) {
-            throw new UnauthorizedException("invalid credentials", 'Basic', array('realm' => $this->basicAuthRealm));
+        // FIXME: we should use 'secure string compare' here to avoid timing
+        // attacks for guessing the username
+        $validUser = $this->basicAuthUser === $requestBasicAuthUser;
+
+        // the password verification is secure against timing attacks
+        if (!password_verify($requestBasicAuthPass, $this->basicAuthPass) || !$validUser) {
+            throw new UnauthorizedException('invalid credentials', 'Basic', array('realm' => $this->basicAuthRealm));
         }
 
-        if (!password_verify($requestBasicAuthPass, $this->basicAuthPass)) {
-            throw new UnauthorizedException("invalid credentials", 'Basic', array('realm' => $this->basicAuthRealm));
-        }
-
-        return new UserInfo($this->basicAuthUser);
+        return new BasicUserInfo($this->basicAuthUser);
     }
 }

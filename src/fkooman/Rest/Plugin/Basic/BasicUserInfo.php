@@ -18,7 +18,7 @@
 
 namespace fkooman\Rest\Plugin\Basic;
 
-class UserInfo
+class BasicUserInfo
 {
     /** @var string */
     private $userId;
