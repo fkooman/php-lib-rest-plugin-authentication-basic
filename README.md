@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fkooman/php-lib-rest-plugin-basic.svg?branch=master)](https://travis-ci.org/fkooman/php-lib-rest-plugin-basic)
+
 # Introduction
 This is a plugin for supporting HTTP Basic Authentication in your REST 
 service based on `fkooman/rest`.
