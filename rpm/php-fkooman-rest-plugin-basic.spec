@@ -17,10 +17,10 @@ BuildArch:  noarch
 
 Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 
-Requires:   php >= 5.4
+Requires:   php >= 5.3.3
 
 Requires:   php-password-compat >= 1.0.0
-Requires:   php-composer(fkooman/rest) >= 0.6.0
+Requires:   php-composer(fkooman/rest) >= 0.6.1
 Requires:   php-composer(fkooman/rest) < 0.7.0
 
 %description

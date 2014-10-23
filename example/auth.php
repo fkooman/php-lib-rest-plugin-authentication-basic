@@ -18,8 +18,6 @@
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
-use fkooman\Http\Request;
-use fkooman\Http\IncomingRequest;
 use fkooman\Http\Exception\HttpException;
 use fkooman\Http\Exception\InternalServerErrorException;
 use fkooman\Rest\Service;
@@ -37,7 +35,7 @@ try {
     $p = '$2y$10$ARD9Oq9xCzFANYGhv0mWxOsOallAS3qLQxLoOtzzRuLhv0U1IU9EO';
 
     $service->registerBeforeEachMatchPlugin(
-       new BasicAuthentication($u, $p, 'My Secured Foo Service')
+        new BasicAuthentication($u, $p, 'My Secured Foo Service')
     );
 
     $service->get(
@@ -47,11 +45,7 @@ try {
         }
     );
 
-    $request = Request::fromIncomingRequest(
-        new IncomingRequest()
-    );
-
-    $service->run($request)->sendResponse();
+    $service->run()->sendResponse();
 } catch (Exception $e) {
     if ($e instanceof HttpException) {
         $response = $e->getHtmlResponse();

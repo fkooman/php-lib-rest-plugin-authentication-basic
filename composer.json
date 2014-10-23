@@ -15,8 +15,8 @@
     "license": "Apache-2.0",
     "name": "fkooman/rest-plugin-basic",
     "require": {
-        "fkooman/rest": "~0.6.0",
+        "fkooman/rest": "~0.6.1",
         "ircmaxell/password-compat": "~1.0",
-        "php": ">=5.4"
+        "php": ">=5.3.3"
     }
 }
