@@ -6,7 +6,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    0.3.1
-Release:    2%{?dist}
+Release:    1%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
 Group:      System Environment/Libraries
