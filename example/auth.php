@@ -28,14 +28,20 @@ try {
     $service = new Service();
 
     // require all requests to have valid authentication
-    $u = 'foo';
-    // NOTE: password is generated using the "password_hash()" function from
-    // PHP 5.6 or the ircmaxell/password-compat library. This way no plain
-    // text passwords are stored anywhere, below is the hashed value of 'bar'
-    $p = '$2y$10$ARD9Oq9xCzFANYGhv0mWxOsOallAS3qLQxLoOtzzRuLhv0U1IU9EO';
-
     $service->registerBeforeEachMatchPlugin(
-        new BasicAuthentication($u, $p, 'My Secured Foo Service')
+        new BasicAuthentication(
+            function ($userId) {
+                // NOTE: password is generated using the "password_hash()"
+                // function from PHP 5.6 or the ircmaxell/password-compat
+                // library. This way no plain text passwords are stored
+                // anywhere, below is the hashed value of 'bar'
+
+                // this function should return the password hash of the
+                // requested userId or false if no such user exists
+                return $userId === 'foo' ? '$2y$10$ARD9Oq9xCzFANYGhv0mWxOsOallAS3qLQxLoOtzzRuLhv0U1IU9EO' : false;
+            },
+            'My Secured Foo Service'
+        )
     );
 
     $service->get(

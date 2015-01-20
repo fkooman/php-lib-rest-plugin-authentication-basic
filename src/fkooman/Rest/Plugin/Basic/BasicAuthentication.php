@@ -24,19 +24,15 @@ use fkooman\Http\Exception\UnauthorizedException;
 
 class BasicAuthentication implements ServicePluginInterface
 {
-    /** @var string */
-    private $basicAuthUser;
-
-    /** @var string */
-    private $basicAuthPass;
+    /** @var function */
+    private $retrieveUserPassHash;
 
     /** @var string */
     private $basicAuthRealm;
 
-    public function __construct($basicAuthUser, $basicAuthPass, $basicAuthRealm = 'Protected Resource')
+    public function __construct(callable $retrieveUserPassHash, $basicAuthRealm = 'Protected Resource')
     {
-        $this->basicAuthUser = $basicAuthUser;
-        $this->basicAuthPass = $basicAuthPass;
+        $this->retrieveUserPassHash = $retrieveUserPassHash;
         $this->basicAuthRealm = $basicAuthRealm;
     }
 
@@ -45,12 +41,10 @@ class BasicAuthentication implements ServicePluginInterface
         $requestBasicAuthUser = $request->getBasicAuthUser();
         $requestBasicAuthPass = $request->getBasicAuthPass();
 
-        // FIXME: we should use 'secure string compare' here to avoid timing
-        // attacks for guessing the username
-        $validUser = $this->basicAuthUser === $requestBasicAuthUser;
+        // retrieve the hashed password for given user
+        $basicAuthPassHash = call_user_func($this->retrieveUserPassHash, $requestBasicAuthUser);
 
-        // the password verification is secure against timing attacks
-        if (!password_verify($requestBasicAuthPass, $this->basicAuthPass) || !$validUser) {
+        if (false === $basicAuthPassHash || !password_verify($requestBasicAuthPass, $basicAuthPassHash)) {
             throw new UnauthorizedException(
                 'invalid_credentials',
                 'supplied username or password are invalid',
@@ -61,6 +55,6 @@ class BasicAuthentication implements ServicePluginInterface
             );
         }
 
-        return new BasicUserInfo($this->basicAuthUser);
+        return new BasicUserInfo($requestBasicAuthUser);
     }
 }

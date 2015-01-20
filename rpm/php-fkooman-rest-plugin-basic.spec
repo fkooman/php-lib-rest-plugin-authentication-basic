@@ -5,7 +5,7 @@
 %global github_name      php-lib-rest-plugin-basic
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    0.2.2
+Version:    0.3.0
 Release:    1%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
@@ -42,6 +42,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Tue Jan 20 2015 François Kooman - 0.3.0-1
+- update to 0.3.0
+
 * Thu Oct 23 2014 François Kooman <fkooman@tuxed.net> - 0.2.2-1
 - update to 0.2.2
 - PHP >= 5.3.3 is enough

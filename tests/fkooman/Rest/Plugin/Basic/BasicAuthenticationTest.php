@@ -30,7 +30,12 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request->setBasicAuthUser('user');
         $request->setBasicAuthPass('pass');
 
-        $basicAuth = new BasicAuthentication('user', password_hash('pass', PASSWORD_DEFAULT), 'realm');
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return password_hash('pass', PASSWORD_DEFAULT);
+            },
+            'realm'
+        );
         $userInfo = $basicAuth->execute($request);
         $this->assertEquals('user', $userInfo->getUserId());
     }
@@ -45,7 +50,13 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request->setBasicAuthUser('wronguser');
         $request->setBasicAuthPass('pass');
 
-        $basicAuth = new BasicAuthentication('user', password_hash('pass', PASSWORD_DEFAULT), 'realm');
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                // we simulate not finding the userId 'wronguser'
+                return false;
+            },
+            'realm'
+        );
         $basicAuth->execute($request);
     }
 
@@ -59,7 +70,12 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request->setBasicAuthUser('user');
         $request->setBasicAuthPass('wrongpass');
 
-        $basicAuth = new BasicAuthentication('user', 'pass', 'realm');
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return 'someWrongHashValue';
+            },
+            'realm'
+        );
         $basicAuth->execute($request);
     }
 }
