@@ -1,5 +1,9 @@
 # Release History
 
+## 0.3.1
+- fix PHP 5.3 support, the callable type hint is only available in 
+  PHP >= 5.4
+
 ## 0.3.0
 - **BREAKING**: we now require a function as the first parameter to the
   constructor that will take care of retrieving the password from the 

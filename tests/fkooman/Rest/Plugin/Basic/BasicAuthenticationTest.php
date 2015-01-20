@@ -78,4 +78,13 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         );
         $basicAuth->execute($request);
     }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage provided parameter is not callable
+     */
+    public function testUncallableParameter()
+    {
+        new BasicAuthentication('foo');
+    }
 }

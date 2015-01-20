@@ -21,6 +21,7 @@ namespace fkooman\Rest\Plugin\Basic;
 use fkooman\Http\Request;
 use fkooman\Rest\ServicePluginInterface;
 use fkooman\Http\Exception\UnauthorizedException;
+use InvalidArgumentException;
 
 class BasicAuthentication implements ServicePluginInterface
 {
@@ -30,8 +31,12 @@ class BasicAuthentication implements ServicePluginInterface
     /** @var string */
     private $basicAuthRealm;
 
-    public function __construct(callable $retrieveUserPassHash, $basicAuthRealm = 'Protected Resource')
+    public function __construct($retrieveUserPassHash, $basicAuthRealm = 'Protected Resource')
     {
+        // type hint 'callable' works only in >= PHP 5.4
+        if (!is_callable($retrieveUserPassHash)) {
+            throw new InvalidArgumentException('provided parameter is not callable');
+        }
         $this->retrieveUserPassHash = $retrieveUserPassHash;
         $this->basicAuthRealm = $basicAuthRealm;
     }
