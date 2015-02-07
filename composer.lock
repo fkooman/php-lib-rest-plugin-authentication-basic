@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "516215f9a992c79551c3d9032a055f50",
+    "hash": "110f321603d4e196b766749dffb20db4",
     "packages": [
         {
             "name": "fkooman/json",
@@ -45,16 +45,16 @@
         },
         {
             "name": "fkooman/rest",
-            "version": "0.6.3",
+            "version": "0.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkooman/php-lib-rest.git",
-                "reference": "7b9384b92b23a6ed7ebebb1b69f9f578426112a8"
+                "reference": "98f7e294a20145c2cc3b8b8c8e5dfc797f8e988a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/7b9384b92b23a6ed7ebebb1b69f9f578426112a8",
-                "reference": "7b9384b92b23a6ed7ebebb1b69f9f578426112a8",
+                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/98f7e294a20145c2cc3b8b8c8e5dfc797f8e988a",
+                "reference": "98f7e294a20145c2cc3b8b8c8e5dfc797f8e988a",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 }
             ],
             "description": "Simple PHP library for writing REST services.",
-            "time": "2014-10-27 18:15:14"
+            "time": "2015-02-07 22:10:26"
         },
         {
             "name": "ircmaxell/password-compat",

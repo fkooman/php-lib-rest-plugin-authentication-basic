@@ -22,6 +22,7 @@ use fkooman\Http\Request;
 use fkooman\Rest\ServicePluginInterface;
 use fkooman\Http\Exception\UnauthorizedException;
 use InvalidArgumentException;
+use fkooman\Rest\Plugin\UserInfo;
 
 class BasicAuthentication implements ServicePluginInterface
 {
@@ -60,6 +61,6 @@ class BasicAuthentication implements ServicePluginInterface
             );
         }
 
-        return new BasicUserInfo($requestBasicAuthUser);
+        return new UserInfo($requestBasicAuthUser);
     }
 }

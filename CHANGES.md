@@ -1,5 +1,8 @@
 # Release History
 
+## 0.4.0
+- use `fkooman/rest` generic `UserInfo` class for user information
+
 ## 0.3.1
 - fix PHP 5.3 support, the callable type hint is only available in 
   PHP >= 5.4

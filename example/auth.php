@@ -22,7 +22,7 @@ use fkooman\Http\Exception\HttpException;
 use fkooman\Http\Exception\InternalServerErrorException;
 use fkooman\Rest\Service;
 use fkooman\Rest\Plugin\Basic\BasicAuthentication;
-use fkooman\Rest\Plugin\Basic\BasicUserInfo;
+use fkooman\Rest\Plugin\UserInfo;
 
 try {
     $service = new Service();
@@ -46,7 +46,7 @@ try {
 
     $service->get(
         '/getMyUserId',
-        function (BasicUserInfo $u) {
+        function (UserInfo $u) {
             return sprintf('Hello %s', $u->getUserId());
         }
     );
