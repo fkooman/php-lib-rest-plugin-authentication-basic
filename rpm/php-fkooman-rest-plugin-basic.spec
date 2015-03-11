@@ -20,8 +20,8 @@ Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 Requires:   php >= 5.3.3
 
 Requires:   php-password-compat >= 1.0.0
-Requires:   php-composer(fkooman/rest) >= 0.6.7
-Requires:   php-composer(fkooman/rest) < 0.7.0
+Requires:   php-composer(fkooman/rest) >= 0.7.1
+Requires:   php-composer(fkooman/rest) < 0.8.0
 
 %description
 Library written in PHP to make it easy to develop REST applications.

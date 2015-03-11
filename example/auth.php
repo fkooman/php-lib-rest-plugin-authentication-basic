@@ -28,7 +28,7 @@ try {
     $service = new Service();
 
     // require all requests to have valid authentication
-    $service->registerBeforeEachMatchPlugin(
+    $service->registerOnMatchPlugin(
         new BasicAuthentication(
             function ($userId) {
                 // NOTE: password is generated using the "password_hash()"
@@ -53,12 +53,5 @@ try {
 
     $service->run()->sendResponse();
 } catch (Exception $e) {
-    if ($e instanceof HttpException) {
-        $response = $e->getHtmlResponse();
-    } else {
-        // we catch all other (unexpected) exceptions and return a 500
-        $e = new InternalServerErrorException($e->getMessage());
-        $response = $e->getHtmlResponse();
-    }
-    $response->sendResponse();
+    Service::handleException($e)->sendResponse();
 }
