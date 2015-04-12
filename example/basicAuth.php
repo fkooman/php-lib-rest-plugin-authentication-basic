@@ -44,10 +44,30 @@ try {
         )
     );
 
+    // make authentication optional, if it is provided we use it, but if
+    // not it is no big deal, don't forget to set the default value of
+    // UserInfo to null!
     $service->get(
-        '/getMyUserId',
+        '/',
+        function (UserInfo $u = null) {
+            if (null === $u) {
+                return 'Hello Anonymous!';
+            }
+
+            return sprintf('Hello %s!', $u->getUserId());
+        },
+        array(
+            'fkooman\Rest\Plugin\Basic\BasicAuthentication' => array(
+                'requireAuth' => false
+            )
+        )
+    );
+
+    // this route requires authentication
+    $service->get(
+        '/secure',
         function (UserInfo $u) {
-            return sprintf('Hello %s', $u->getUserId());
+            return sprintf('Hello %s!', $u->getUserId());
         }
     );
 

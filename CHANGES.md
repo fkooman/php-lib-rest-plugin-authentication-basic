@@ -1,5 +1,8 @@
 # Release History
 
+## 0.5.1
+- update to latest `fkooman/rest` to support optional authentication
+
 ## 0.5.0
 - update to latest `fkooman/rest`
 

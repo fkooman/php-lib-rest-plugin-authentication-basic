@@ -36,7 +36,27 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             },
             'realm'
         );
-        $userInfo = $basicAuth->execute($request);
+        $userInfo = $basicAuth->execute($request, array());
+        $this->assertEquals('user', $userInfo->getUserId());
+    }
+
+    /**
+     * @expectedException fkooman\Http\Exception\UnauthorizedException
+     * @expectedExceptionMessage invalid_credentials
+     */
+    public function testBasicAuthFailExplicitRequireAuth()
+    {
+        $request = new Request('http://www.example.org/foo', "GET");
+        $request->setBasicAuthUser('user');
+        $request->setBasicAuthPass('pazz');
+
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return password_hash('pass', PASSWORD_DEFAULT);
+            },
+            'realm'
+        );
+        $userInfo = $basicAuth->execute($request, array('requireAuth' => true));
         $this->assertEquals('user', $userInfo->getUserId());
     }
 
@@ -57,7 +77,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             },
             'realm'
         );
-        $basicAuth->execute($request);
+        $basicAuth->execute($request, array());
     }
 
     /**
@@ -76,7 +96,51 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             },
             'realm'
         );
-        $basicAuth->execute($request);
+        $basicAuth->execute($request, array());
+    }
+
+    /**
+     * @expectedException fkooman\Http\Exception\UnauthorizedException
+     * @expectedExceptionMessage invalid_credentials
+     */
+    public function testNoAuth()
+    {
+        $request = new Request('http://www.example.org/foo', "GET");
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return 'whatever';
+            },
+            'realm'
+        );
+        $basicAuth->execute($request, array());
+    }
+
+    public function testOptionalAuthNoCredentials()
+    {
+        $request = new Request('http://www.example.org/foo', "GET");
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return 'someWrongHashValue';
+            },
+            'realm'
+        );
+        $this->assertFalse($basicAuth->execute($request, array('requireAuth' => false)));
+    }
+
+    public function testOptionalAuthCorrect()
+    {
+        $request = new Request('http://www.example.org/foo', "GET");
+        $request->setBasicAuthUser('user');
+        $request->setBasicAuthPass('pass');
+
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                return password_hash('pass', PASSWORD_DEFAULT);
+            },
+            'realm'
+        );
+        $userInfo = $basicAuth->execute($request, array('requireAuth' => false));
+        $this->assertEquals('user', $userInfo->getUserId());
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Copyright 2014 François Kooman <fkooman@tuxed.net>
+* Copyright 2015 François Kooman <fkooman@tuxed.net>
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,40 +27,47 @@ use fkooman\Rest\Plugin\UserInfo;
 class BasicAuthentication implements ServicePluginInterface
 {
     /** @var function */
-    private $retrieveUserPassHash;
+    private $retrieveHash;
 
     /** @var string */
-    private $basicAuthRealm;
+    private $realm;
 
-    public function __construct($retrieveUserPassHash, $basicAuthRealm = 'Protected Resource')
+    public function __construct($retrieveHash, $realm = 'Protected Resource')
     {
         // type hint 'callable' works only in >= PHP 5.4
-        if (!is_callable($retrieveUserPassHash)) {
+        if (!is_callable($retrieveHash)) {
             throw new InvalidArgumentException('provided parameter is not callable');
         }
-        $this->retrieveUserPassHash = $retrieveUserPassHash;
-        $this->basicAuthRealm = $basicAuthRealm;
+        $this->retrieveHash = $retrieveHash;
+        $this->realm = $realm;
     }
 
-    public function execute(Request $request)
+    public function execute(Request $request, array $routeConfig)
     {
-        $requestBasicAuthUser = $request->getBasicAuthUser();
-        $requestBasicAuthPass = $request->getBasicAuthPass();
+        $authUser = $request->getBasicAuthUser();
+        $authPass = $request->getBasicAuthPass();
 
         // retrieve the hashed password for given user
-        $basicAuthPassHash = call_user_func($this->retrieveUserPassHash, $requestBasicAuthUser);
+        $passHash = call_user_func($this->retrieveHash, $authUser);
 
-        if (false === $basicAuthPassHash || !password_verify($requestBasicAuthPass, $basicAuthPassHash)) {
+        if (!password_verify($authPass, $passHash)) {
+            // check if authentication is required...
+            if (array_key_exists('requireAuth', $routeConfig)) {
+                if (!$routeConfig['requireAuth']) {
+                    return false;
+                }
+            }
+            
             throw new UnauthorizedException(
                 'invalid_credentials',
                 'supplied username or password are invalid',
                 'Basic',
                 array(
-                    'realm' => $this->basicAuthRealm,
+                    'realm' => $this->realm,
                 )
             );
         }
 
-        return new UserInfo($requestBasicAuthUser);
+        return new UserInfo($authUser);
     }
 }

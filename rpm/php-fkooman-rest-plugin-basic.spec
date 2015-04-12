@@ -5,7 +5,7 @@
 %global github_name      php-lib-rest-plugin-basic
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    0.5.0
+Version:    0.5.1
 Release:    1%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
@@ -20,8 +20,8 @@ Provides:   php-composer(%{composer_vendor}/%{composer_project}) = %{version}
 Requires:   php >= 5.3.3
 
 Requires:   php-password-compat >= 1.0.0
-Requires:   php-composer(fkooman/rest) >= 0.7.1
-Requires:   php-composer(fkooman/rest) < 0.8.0
+Requires:   php-composer(fkooman/rest) >= 0.8.0
+Requires:   php-composer(fkooman/rest) < 0.9.0
 
 %description
 Library written in PHP to make it easy to develop REST applications.
@@ -42,6 +42,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Sun Apr 12 2015 François Kooman <fkooman@tuxed.net> - 0.5.1-1
+- update to 0.5.1
+
 * Wed Mar 11 2015 François Kooman <fkooman@tuxed.net> - 0.5.0-1
 - update to 0.5.0
 
