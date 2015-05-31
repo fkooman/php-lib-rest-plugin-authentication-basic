@@ -1,35 +1,39 @@
 <?php
 
 /**
-* Copyright 2014 François Kooman <fkooman@tuxed.net>
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-namespace fkooman\Rest;
+ * Copyright 2014 François Kooman <fkooman@tuxed.net>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+namespace fkooman\Rest\Plugin\Basic;
 
 use fkooman\Http\Request;
-use fkooman\Rest\Plugin\Basic\BasicAuthentication;
 use PHPUnit_Framework_TestCase;
 
 class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 {
     public function testBasicAuthCorrect()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
-        $request->setBasicAuthUser('user');
-        $request->setBasicAuthPass('pass');
-
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_AUTHORIZATION' => sprintf('Basic %s', base64_encode('user:pass')),
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);
@@ -46,10 +50,16 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
      */
     public function testBasicAuthFailExplicitRequireAuth()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
-        $request->setBasicAuthUser('user');
-        $request->setBasicAuthPass('pazz');
-
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_AUTHORIZATION' => sprintf('Basic %s', base64_encode('user:pazz')),
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);
@@ -66,10 +76,16 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
      */
     public function testBasicAuthWrongUser()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
-        $request->setBasicAuthUser('wronguser');
-        $request->setBasicAuthPass('pass');
-
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_AUTHORIZATION' => sprintf('Basic %s', base64_encode('wronguser:pass')),
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 // we simulate not finding the userId 'wronguser'
@@ -86,10 +102,16 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
      */
     public function testBasicAuthWrongPass()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
-        $request->setBasicAuthUser('user');
-        $request->setBasicAuthPass('wrongpass');
-
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_AUTHORIZATION' => sprintf('Basic %s', base64_encode('user:wrongpass')),
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return 'someWrongHashValue';
@@ -101,11 +123,19 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException fkooman\Http\Exception\UnauthorizedException
-     * @expectedExceptionMessage invalid_credentials
+     * @expectedExceptionMessage no_credentials
      */
     public function testNoAuth()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return 'whatever';
@@ -117,7 +147,15 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 
     public function testOptionalAuthNoCredentials()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return 'someWrongHashValue';
@@ -129,10 +167,16 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
 
     public function testOptionalAuthCorrect()
     {
-        $request = new Request('http://www.example.org/foo', "GET");
-        $request->setBasicAuthUser('user');
-        $request->setBasicAuthPass('pass');
-
+        $srv = array(
+            'SERVER_NAME' => 'www.example.org',
+            'SERVER_PORT' => 80,
+            'QUERY_STRING' => '',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_AUTHORIZATION' => sprintf('Basic %s', base64_encode('user:pass')),
+        );
+        $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);

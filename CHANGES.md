@@ -1,5 +1,11 @@
 # Release History
 
+## 0.6.0
+- update `fkooman/rest`
+- implement our own Basic header parsing for compatibility with PHP-FPM
+- deal better with optional authentication
+- update example
+
 ## 0.5.1
 - update to latest `fkooman/rest` to support optional authentication
 
