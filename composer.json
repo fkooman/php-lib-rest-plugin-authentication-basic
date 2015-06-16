@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "fkooman\\Rest\\Plugin\\Basic": "src/"
+            "fkooman\\Rest\\Plugin\\Basic\\": "src/"
         }
     },
     "description": "Basic Authentication plugin for fkooman/rest",
