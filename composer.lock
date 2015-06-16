@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9abf8923fe8a0519fd552ed53481b19a",
+    "hash": "f8c55429ba192b3daae6acd1cf664d98",
     "packages": [
         {
             "name": "fkooman/json",
@@ -45,19 +45,20 @@
         },
         {
             "name": "fkooman/rest",
-            "version": "dev-develop",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkooman/php-lib-rest.git",
-                "reference": "6b53cec8b23f7561a6bbd8646fea3449bcc1d964"
+                "reference": "1b3b1451f30e262090bb8ef8351acb2ba64bf63c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/6b53cec8b23f7561a6bbd8646fea3449bcc1d964",
-                "reference": "6b53cec8b23f7561a6bbd8646fea3449bcc1d964",
+                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/1b3b1451f30e262090bb8ef8351acb2ba64bf63c",
+                "reference": "1b3b1451f30e262090bb8ef8351acb2ba64bf63c",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "fkooman/json": "~0.6.0",
                 "php": ">=5.3.3"
             },
@@ -69,7 +70,7 @@
                 "fkooman/rest-plugin-bearer": "Bearer (OAuth) Authentication plugin",
                 "fkooman/rest-plugin-indieauth": "IndieAuth Authentication plugin",
                 "fkooman/rest-plugin-mellon": "Mellon (SAML) Authentication plugin",
-                "fkooman/rest-plugin-simplesaml": "simpleSAMLphp (SAML) Authentication plugin"
+                "fkooman/rest-plugin-tls": "TLS Client Certificate Authentication plugin"
             },
             "type": "library",
             "autoload": {
@@ -90,7 +91,7 @@
                 }
             ],
             "description": "Simple PHP library for writing REST services.",
-            "time": "2015-05-31 08:41:59"
+            "time": "2015-06-16 10:55:24"
         },
         {
             "name": "ircmaxell/password-compat",

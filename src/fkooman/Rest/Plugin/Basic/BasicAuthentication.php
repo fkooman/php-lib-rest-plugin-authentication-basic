@@ -20,11 +20,10 @@ namespace fkooman\Rest\Plugin\Basic;
 use fkooman\Http\Exception\BadRequestException;
 use fkooman\Http\Exception\UnauthorizedException;
 use fkooman\Http\Request;
-use fkooman\Rest\Plugin\UserInfo;
-use fkooman\Rest\ServicePluginInterface;
+use fkooman\Rest\Plugin\Authentication\AuthenticationPluginInterface;
 use InvalidArgumentException;
 
-class BasicAuthentication implements ServicePluginInterface
+class BasicAuthentication implements AuthenticationPluginInterface
 {
     /** @var function */
     private $retrieveHash;
@@ -42,11 +41,21 @@ class BasicAuthentication implements ServicePluginInterface
         $this->realm = $realm;
     }
 
+    public function getRealm()
+    {
+        return $this->realm;
+    }
+
+    public function getAuthScheme()
+    {
+        return 'Basic';
+    }
+
     public function execute(Request $request, array $routeConfig)
     {
-        $authHeader = $request->getHeader('Authorization');
-        if ($this->isAuthenticationAttempt($authHeader)) {
+        if ($this->isAttempt($request)) {
             // if there is an attempt, it MUST succeed
+            $authHeader = $request->getHeader('Authorization');
             $authUserPass = $this->getAuthUserPass($authHeader);
             if (false === $authUserPass) {
                 // problem in getting the authUser and authPass
@@ -68,7 +77,7 @@ class BasicAuthentication implements ServicePluginInterface
                 );
             }
 
-            return new UserInfo($authUser);
+            return new BasicUserInfo($authUser);
         } else {
             // if there is no attempt, and authentication is not required,
             // then we can let it go :)
@@ -88,8 +97,14 @@ class BasicAuthentication implements ServicePluginInterface
         }
     }
 
-    private function isAuthenticationAttempt($authHeader)
+    public function getScheme()
     {
+        return 'Basic';
+    }
+
+    public function isAttempt(Request $request)
+    {
+        $authHeader = $request->getHeader('Authorization');
         if (null === $authHeader) {
             return false;
         }
@@ -139,9 +154,9 @@ class BasicAuthentication implements ServicePluginInterface
      */
     private function getAuthUserPass($authHeader)
     {
-        if (!$this->isAuthenticationAttempt($authHeader)) {
-            return false;
-        }
+        #        if (!$this->isAttempt($authHeader)) {
+#            return false;
+#        }
 
         return $this->extractUserPass(substr($authHeader, 6));
     }
