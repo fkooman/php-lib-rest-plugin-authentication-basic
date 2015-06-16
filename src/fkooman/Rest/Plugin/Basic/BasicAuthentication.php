@@ -25,7 +25,7 @@ use InvalidArgumentException;
 
 class BasicAuthentication implements AuthenticationPluginInterface
 {
-    /** @var function */
+    /** @var callable */
     private $retrieveHash;
 
     /** @var string */

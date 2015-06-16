@@ -72,7 +72,7 @@ $service->get(
     '/secure',
     function (BasicUserInfo $u) {
         $response = new Response(200, 'text/plain');
-        $response->setBody('Hello %s!', $u->getUserId());
+        $response->setBody(sprintf('Hello %s!', $u->getUserId()));
 
         return $response;
     }
