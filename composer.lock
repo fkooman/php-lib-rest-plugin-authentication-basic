@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkooman/php-lib-rest.git",
-                "reference": "1b3b1451f30e262090bb8ef8351acb2ba64bf63c"
+                "reference": "57d036a987c1bff88e5d1dface671cf76a4ee6ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/1b3b1451f30e262090bb8ef8351acb2ba64bf63c",
-                "reference": "1b3b1451f30e262090bb8ef8351acb2ba64bf63c",
+                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/57d036a987c1bff88e5d1dface671cf76a4ee6ba",
+                "reference": "57d036a987c1bff88e5d1dface671cf76a4ee6ba",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 }
             ],
             "description": "Simple PHP library for writing REST services.",
-            "time": "2015-06-16 10:55:24"
+            "time": "2015-06-16 15:24:07"
         },
         {
             "name": "ircmaxell/password-compat",
