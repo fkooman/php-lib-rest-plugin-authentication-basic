@@ -21,6 +21,10 @@ use fkooman\Rest\Service;
 use fkooman\Rest\PluginRegistry;
 use fkooman\Rest\Plugin\Basic\BasicAuthentication;
 use fkooman\Rest\Plugin\Basic\BasicUserInfo;
+use fkooman\Http\Response;
+use fkooman\Rest\ExceptionHandler;
+
+ExceptionHandler::register();
 
 $service = new Service();
 $pluginRegistry = new PluginRegistry();
@@ -74,4 +78,4 @@ $service->get(
     }
 );
 
-$service->run()->sendResponse();
+$service->run()->send();

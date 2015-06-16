@@ -231,4 +231,3 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         );
     }
 }
-
