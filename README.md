@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/fkooman/php-lib-rest-plugin-basic.svg?branch=master)](https://travis-ci.org/fkooman/php-lib-rest-plugin-basic)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fkooman/php-lib-rest-plugin-basic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fkooman/php-lib-rest-plugin-basic/?branch=master)
 
 # Introduction
 This is a plugin for supporting HTTP Basic Authentication in your REST 
