@@ -162,7 +162,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             },
             'realm'
         );
-        $this->assertFalse($basicAuth->execute($request, array('requireAuth' => false)));
+        $this->assertNull($basicAuth->execute($request, array('requireAuth' => false)));
     }
 
     public function testOptionalAuthCorrect()
@@ -195,4 +195,40 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
     {
         new BasicAuthentication('foo');
     }
+
+    public function testGetRealm()
+    {
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                'xyz';
+            },
+            'my test realm'
+        );
+        $this->assertEquals('my test realm', $basicAuth->getRealm());
+    }
+
+    public function testGetScheme()
+    {
+        $basicAuth = new BasicAuthentication(
+            function ($userId) {
+                'xyz';
+            },
+            'my test realm'
+        );
+        $this->assertEquals('Basic', $basicAuth->getScheme());
+    }
+
+    public function testExtractUserPass()
+    {
+        $this->assertFalse(BasicAuthentication::extractUserPass(''));
+        $this->assertFalse(BasicAuthentication::extractUserPass(','));
+        $this->assertFalse(BasicAuthentication::extractUserPass(base64_encode('foo')));
+        $this->assertEquals(
+            array('foo', 'bar'),
+            BasicAuthentication::extractUserPass(
+                base64_encode('foo:bar')
+            )
+        );
+    }
 }
+

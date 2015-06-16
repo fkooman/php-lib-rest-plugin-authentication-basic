@@ -20,7 +20,7 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 use fkooman\Rest\Service;
 use fkooman\Rest\PluginRegistry;
 use fkooman\Rest\Plugin\Basic\BasicAuthentication;
-use fkooman\Rest\Plugin\UserInfo;
+use fkooman\Rest\Plugin\Basic\BasicUserInfo;
 
 $service = new Service();
 $pluginRegistry = new PluginRegistry();
@@ -46,7 +46,7 @@ $service->setPluginRegistry($pluginRegistry);
 // UserInfo to null!
 $service->get(
     '/',
-    function (UserInfo $u = null) {
+    function (BasicUserInfo $u = null) {
         $response = new Response(200, 'text/plain');
         if (null === $u) {
             $response->setBody('Hello Anonymous!');
@@ -66,7 +66,7 @@ $service->get(
 // this route requires authentication
 $service->get(
     '/secure',
-    function (UserInfo $u) {
+    function (BasicUserInfo $u) {
         $response = new Response(200, 'text/plain');
         $response->setBody('Hello %s!', $u->getUserId());
 

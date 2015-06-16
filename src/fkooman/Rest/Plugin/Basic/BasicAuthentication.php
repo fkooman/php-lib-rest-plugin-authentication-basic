@@ -46,9 +46,22 @@ class BasicAuthentication implements AuthenticationPluginInterface
         return $this->realm;
     }
 
-    public function getAuthScheme()
+    public function getScheme()
     {
         return 'Basic';
+    }
+
+    public function isAttempt(Request $request)
+    {
+        $authHeader = $request->getHeader('Authorization');
+        if (null === $authHeader) {
+            return false;
+        }
+        if (0 !== strpos($authHeader, 'Basic ')) {
+            return false;
+        }
+
+        return true;
     }
 
     public function execute(Request $request, array $routeConfig)
@@ -56,7 +69,7 @@ class BasicAuthentication implements AuthenticationPluginInterface
         if ($this->isAttempt($request)) {
             // if there is an attempt, it MUST succeed
             $authHeader = $request->getHeader('Authorization');
-            $authUserPass = $this->getAuthUserPass($authHeader);
+            $authUserPass = self::extractUserPass(substr($authHeader, 6));
             if (false === $authUserPass) {
                 // problem in getting the authUser and authPass
                 throw new BadRequestException('unable to decode authUser and/or authPass');
@@ -83,7 +96,7 @@ class BasicAuthentication implements AuthenticationPluginInterface
             // then we can let it go :)
             if (array_key_exists('requireAuth', $routeConfig)) {
                 if (!$routeConfig['requireAuth']) {
-                    return false;
+                    return;
                 }
             }
             throw new UnauthorizedException(
@@ -97,34 +110,16 @@ class BasicAuthentication implements AuthenticationPluginInterface
         }
     }
 
-    public function getScheme()
-    {
-        return 'Basic';
-    }
-
-    public function isAttempt(Request $request)
-    {
-        $authHeader = $request->getHeader('Authorization');
-        if (null === $authHeader) {
-            return false;
-        }
-        if (0 !== strpos($authHeader, 'Basic ')) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
-     * Extract the authUser and andPass from the BASE64 encoded string.
+     * Extract the authUser and authPass from the BASE64 encoded string.
      *
      * @param string $encodedString the BASE64 encoded colon separated
      *                              authUser and authPass
      *
-     * @return array|false array containing authUser and authPass or false if
-     *                     the decoding fails
+     * @return mixed array containing authUser and authPass or false if
+     *               the decoding fails
      */
-    private function extractUserPass($encodedString)
+    public static function extractUserPass($encodedString)
     {
         if (0 >= strlen($encodedString)) {
             return false;
@@ -139,25 +134,5 @@ class BasicAuthentication implements AuthenticationPluginInterface
         }
 
         return explode(':', $decodedString, 2);
-    }
-
-    /**
-     * Extracts the authUser and authPass from the Basic Authoriziation header.
-     *
-     * @param string $authHeader the Basic header, e.g. 'Basic Zm9vOmJhcg=='
-     *
-     * @return array the base64 decoded password from the Basic header
-     *
-     * NOTE: if any of the steps fail, finding the 'Basic ' prefix, decoding
-     * the base64 string, finding an empty authUser or authPass the resulting
-     * authUser and authPass will both be 'null'.
-     */
-    private function getAuthUserPass($authHeader)
-    {
-        #        if (!$this->isAttempt($authHeader)) {
-#            return false;
-#        }
-
-        return $this->extractUserPass(substr($authHeader, 6));
     }
 }
