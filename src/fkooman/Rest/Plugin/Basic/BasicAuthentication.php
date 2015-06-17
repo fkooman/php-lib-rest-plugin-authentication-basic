@@ -78,8 +78,7 @@ class BasicAuthentication implements AuthenticationPluginInterface
 
             // retrieve the hashed password for given user
             $passHash = call_user_func($this->retrieveHash, $authUser);
-
-            if (!password_verify($authPass, $passHash)) {
+            if (false === $passHash || !password_verify($authPass, $passHash)) {
                 throw new UnauthorizedException(
                     'invalid_credentials',
                     'provided credentials not valid',
