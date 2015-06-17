@@ -49,21 +49,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fkooman/php-lib-rest.git",
-                "reference": "57d036a987c1bff88e5d1dface671cf76a4ee6ba"
+                "reference": "455b4658541136f7bdb86e5de2430bc619017b75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/57d036a987c1bff88e5d1dface671cf76a4ee6ba",
-                "reference": "57d036a987c1bff88e5d1dface671cf76a4ee6ba",
+                "url": "https://api.github.com/repos/fkooman/php-lib-rest/zipball/455b4658541136f7bdb86e5de2430bc619017b75",
+                "reference": "455b4658541136f7bdb86e5de2430bc619017b75",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "fkooman/json": "~0.6.0",
                 "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "ext-xdebug": "*"
             },
             "suggest": {
                 "fkooman/rest-plugin-basic": "Basic Authentication plugin",
@@ -75,8 +72,8 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "fkooman\\Http": "src/",
-                    "fkooman\\Rest": "src/"
+                    "fkooman\\Http\\": "src/",
+                    "fkooman\\Rest\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -91,7 +88,7 @@
                 }
             ],
             "description": "Simple PHP library for writing REST services.",
-            "time": "2015-06-16 15:24:07"
+            "time": "2015-06-17 17:49:54"
         },
         {
             "name": "ircmaxell/password-compat",

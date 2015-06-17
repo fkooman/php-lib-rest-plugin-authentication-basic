@@ -28,27 +28,27 @@ class BasicAuthentication implements AuthenticationPluginInterface
     /** @var callable */
     private $retrieveHash;
 
-    /** @var string */
-    private $realm;
+    /** @var array */
+    private $authParams;
 
-    public function __construct($retrieveHash, $realm = 'Protected Resource')
+    public function __construct($retrieveHash, array $authParams = array())
     {
         // type hint 'callable' works only in >= PHP 5.4
         if (!is_callable($retrieveHash)) {
             throw new InvalidArgumentException('provided parameter is not callable');
         }
         $this->retrieveHash = $retrieveHash;
-        $this->realm = $realm;
-    }
-
-    public function getRealm()
-    {
-        return $this->realm;
+        $this->authParams = $authParams;
     }
 
     public function getScheme()
     {
         return 'Basic';
+    }
+
+    public function getAuthParams()
+    {
+        return $this->authParams;
     }
 
     public function isAttempt(Request $request)
@@ -83,30 +83,27 @@ class BasicAuthentication implements AuthenticationPluginInterface
                     'invalid_credentials',
                     'provided credentials not valid',
                     'Basic',
-                    array(
-                        'realm' => $this->realm,
-                    )
+                    $this->authParams
                 );
             }
 
             return new BasicUserInfo($authUser);
-        } else {
-            // if there is no attempt, and authentication is not required,
-            // then we can let it go :)
-            if (array_key_exists('requireAuth', $routeConfig)) {
-                if (!$routeConfig['requireAuth']) {
-                    return;
-                }
-            }
-            throw new UnauthorizedException(
-                'no_credentials',
-                'credentials must be provided',
-                'Basic',
-                array(
-                    'realm' => $this->realm,
-                )
-            );
         }
+
+        // if there is no attempt, and authentication is not required,
+        // then we can let it go :)
+        if (array_key_exists('requireAuth', $routeConfig)) {
+            if (!$routeConfig['requireAuth']) {
+                return;
+            }
+        }
+
+        throw new UnauthorizedException(
+            'no_credentials',
+            'credentials must be provided',
+            'Basic',
+            $this->authParams
+        );
     }
 
     /**

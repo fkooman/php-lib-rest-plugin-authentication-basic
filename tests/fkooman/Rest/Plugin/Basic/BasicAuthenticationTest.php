@@ -38,7 +38,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $userInfo = $basicAuth->execute($request, array());
         $this->assertEquals('user', $userInfo->getUserId());
@@ -64,7 +64,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $userInfo = $basicAuth->execute($request, array('requireAuth' => true));
         $this->assertEquals('user', $userInfo->getUserId());
@@ -91,7 +91,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
                 // we simulate not finding the userId 'wronguser'
                 return false;
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $basicAuth->execute($request, array());
     }
@@ -116,7 +116,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return 'someWrongHashValue';
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $basicAuth->execute($request, array());
     }
@@ -140,7 +140,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return 'whatever';
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $basicAuth->execute($request, array());
     }
@@ -160,7 +160,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return 'someWrongHashValue';
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $this->assertNull($basicAuth->execute($request, array('requireAuth' => false)));
     }
@@ -181,7 +181,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             function ($userId) {
                 return password_hash('pass', PASSWORD_DEFAULT);
             },
-            'realm'
+            array('realm' => 'realm')
         );
         $userInfo = $basicAuth->execute($request, array('requireAuth' => false));
         $this->assertEquals('user', $userInfo->getUserId());
@@ -196,24 +196,13 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         new BasicAuthentication('foo');
     }
 
-    public function testGetRealm()
-    {
-        $basicAuth = new BasicAuthentication(
-            function ($userId) {
-                'xyz';
-            },
-            'my test realm'
-        );
-        $this->assertEquals('my test realm', $basicAuth->getRealm());
-    }
-
     public function testGetScheme()
     {
         $basicAuth = new BasicAuthentication(
             function ($userId) {
                 'xyz';
             },
-            'my test realm'
+            array('realm' => 'realm')
         );
         $this->assertEquals('Basic', $basicAuth->getScheme());
     }
