@@ -40,7 +40,7 @@ $pluginRegistry->registerDefaultPlugin(
             // requested userId or false if no such user exists
             return $userId === 'foo' ? '$2y$10$ARD9Oq9xCzFANYGhv0mWxOsOallAS3qLQxLoOtzzRuLhv0U1IU9EO' : false;
         },
-        'My Secured Foo Service'
+        array('realm' => 'My Secured Foo Service')
     )
 );
 $service->setPluginRegistry($pluginRegistry);
