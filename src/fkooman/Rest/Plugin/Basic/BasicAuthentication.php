@@ -39,6 +39,9 @@ class BasicAuthentication implements AuthenticationPluginInterface
             throw new InvalidArgumentException('provided parameter is not callable');
         }
         $this->retrieveHash = $retrieveHash;
+        if (!array_key_exists('realm', $authParams)) {
+            $authParams['realm'] = 'Protected Resource';
+        }
         $this->authParams = $authParams;
     }
 
@@ -56,6 +59,12 @@ class BasicAuthentication implements AuthenticationPluginInterface
     {
         $authHeader = $request->getHeader('Authorization');
         if (null === $authHeader) {
+            return false;
+        }
+        if (!is_string($authHeader)) {
+            return false;
+        }
+        if (6 >= strlen($authHeader)) {
             return false;
         }
         if (0 !== strpos($authHeader, 'Basic ')) {

@@ -5,7 +5,7 @@
 %global github_name      php-lib-rest-plugin-basic
 
 Name:       php-%{composer_vendor}-%{composer_project}
-Version:    0.5.1
+Version:    0.6.0
 Release:    1%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
@@ -42,6 +42,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Sun Jun 28 2015 François Kooman <fkooman@tuxed.net> - 0.6.0-1
+- update to 0.6.0
+
 * Sun Apr 12 2015 François Kooman <fkooman@tuxed.net> - 0.5.1-1
 - update to 0.5.1
 
