@@ -1,5 +1,8 @@
 # Release History
 
+## 0.6.1
+- update spec file
+
 ## 0.6.0
 - update `fkooman/rest`
 - implement our own Basic header parsing for compatibility with PHP-FPM
