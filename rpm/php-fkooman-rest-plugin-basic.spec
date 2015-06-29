@@ -6,7 +6,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    0.6.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
 Group:      System Environment/Libraries
@@ -42,6 +42,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %doc README.md CHANGES.md COPYING composer.json
 
 %changelog
+* Mon Jun 29 2015 François Kooman <fkooman@tuxed.net> - 0.6.0-2
+- require correct version of fkooman/rest
+
 * Sun Jun 28 2015 François Kooman <fkooman@tuxed.net> - 0.6.0-1
 - update to 0.6.0
 
