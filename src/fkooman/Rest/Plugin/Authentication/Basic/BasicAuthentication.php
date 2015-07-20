@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace fkooman\Rest\Plugin\Basic;
+namespace fkooman\Rest\Plugin\Authentication\Basic;
 
 use fkooman\Http\Exception\BadRequestException;
 use fkooman\Http\Exception\UnauthorizedException;

@@ -8,16 +8,16 @@
     ],
     "autoload": {
         "psr-0": {
-            "fkooman\\Rest\\Plugin\\Basic\\": "src/"
+            "fkooman\\Rest\\Plugin\\Authentication\\Basic\\": "src/"
         }
     },
     "description": "Basic Authentication plugin for fkooman/rest",
     "license": "Apache-2.0",
-    "name": "fkooman/rest-plugin-basic",
+    "name": "fkooman/rest-plugin-authentication-basic",
     "require": {
         "fkooman/rest": "^1.0.0",
 	"fkooman/rest-plugin-authentication": "^1.0.0",
         "ircmaxell/password-compat": "~1.0",
-        "php": ">=5.3.3"
+        "php": ">=5.4"
     }
 }
