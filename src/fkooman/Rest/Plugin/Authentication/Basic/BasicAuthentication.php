@@ -22,7 +22,6 @@ use fkooman\Http\Exception\BadRequestException;
 use fkooman\Http\Exception\UnauthorizedException;
 use fkooman\Http\Request;
 use fkooman\Rest\Plugin\Authentication\AuthenticationPluginInterface;
-use InvalidArgumentException;
 
 class BasicAuthentication implements AuthenticationPluginInterface
 {
@@ -32,12 +31,8 @@ class BasicAuthentication implements AuthenticationPluginInterface
     /** @var array */
     private $authParams;
 
-    public function __construct($retrieveHash, array $authParams = array())
+    public function __construct(callable $retrieveHash, array $authParams = array())
     {
-        // type hint 'callable' works only in >= PHP 5.4
-        if (!is_callable($retrieveHash)) {
-            throw new InvalidArgumentException('provided parameter is not callable');
-        }
         $this->retrieveHash = $retrieveHash;
         if (!array_key_exists('realm', $authParams)) {
             $authParams['realm'] = 'Protected Resource';
@@ -102,8 +97,8 @@ class BasicAuthentication implements AuthenticationPluginInterface
 
         // if there is no attempt, and authentication is not required,
         // then we can let it go :)
-        if (array_key_exists('requireAuth', $routeConfig)) {
-            if (!$routeConfig['requireAuth']) {
+        if (array_key_exists('require', $routeConfig)) {
+            if (!$routeConfig['require']) {
                 return;
             }
         }

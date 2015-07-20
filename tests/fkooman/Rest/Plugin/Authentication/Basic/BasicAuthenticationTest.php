@@ -37,7 +37,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
-                return password_hash('pass', PASSWORD_DEFAULT);
+                return '$2y$10$XwlqKgPF.OJvaZxxCXO3hOi5wSh0WbLq9quN/319SVEFl5YWyv3WC';
             },
             array('realm' => 'realm')
         );
@@ -49,7 +49,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
      * @expectedException fkooman\Http\Exception\UnauthorizedException
      * @expectedExceptionMessage invalid_credentials
      */
-    public function testBasicAuthFailExplicitRequireAuth()
+    public function testBasicAuthFailExplicitrequire()
     {
         $srv = array(
             'SERVER_NAME' => 'www.example.org',
@@ -63,11 +63,11 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
-                return password_hash('pass', PASSWORD_DEFAULT);
+                return '$2y$10$XwlqKgPF.OJvaZxxCXO3hOi5wSh0WbLq9quN/319SVEFl5YWyv3WC';
             },
             array('realm' => 'realm')
         );
-        $userInfo = $basicAuth->execute($request, array('requireAuth' => true));
+        $userInfo = $basicAuth->execute($request, array('require' => true));
         $this->assertEquals('user', $userInfo->getUserId());
     }
 
@@ -163,7 +163,7 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
             },
             array('realm' => 'realm')
         );
-        $this->assertNull($basicAuth->execute($request, array('requireAuth' => false)));
+        $this->assertNull($basicAuth->execute($request, array('require' => false)));
     }
 
     public function testOptionalAuthCorrect()
@@ -180,21 +180,12 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
         $request = new Request($srv);
         $basicAuth = new BasicAuthentication(
             function ($userId) {
-                return password_hash('pass', PASSWORD_DEFAULT);
+                return '$2y$10$XwlqKgPF.OJvaZxxCXO3hOi5wSh0WbLq9quN/319SVEFl5YWyv3WC';
             },
             array('realm' => 'realm')
         );
-        $userInfo = $basicAuth->execute($request, array('requireAuth' => false));
+        $userInfo = $basicAuth->execute($request, array('require' => false));
         $this->assertEquals('user', $userInfo->getUserId());
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage provided parameter is not callable
-     */
-    public function testUncallableParameter()
-    {
-        new BasicAuthentication('foo');
     }
 
     public function testGetScheme()

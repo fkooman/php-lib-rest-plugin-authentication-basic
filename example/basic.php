@@ -18,17 +18,12 @@
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
 use fkooman\Rest\Service;
-use fkooman\Rest\PluginRegistry;
 use fkooman\Rest\Plugin\Basic\BasicAuthentication;
 use fkooman\Rest\Plugin\Basic\BasicUserInfo;
 use fkooman\Http\Response;
-use fkooman\Rest\ExceptionHandler;
-
-ExceptionHandler::register();
 
 $service = new Service();
-$pluginRegistry = new PluginRegistry();
-$pluginRegistry->registerDefaultPlugin(
+$service->getPluginRegistry()->register(
     new BasicAuthentication(
         function ($userId) {
             // NOTE: password is generated using the "password_hash()"
@@ -43,7 +38,6 @@ $pluginRegistry->registerDefaultPlugin(
         array('realm' => 'My Secured Foo Service')
     )
 );
-$service->setPluginRegistry($pluginRegistry);
 
 // make authentication optional, if it is provided we use it, but if
 // not it is no big deal, don't forget to set the default value of
@@ -61,8 +55,8 @@ $service->get(
         return $response;
     },
     array(
-        'fkooman\Rest\Plugin\Basic\BasicAuthentication' => array(
-            'requireAuth' => false,
+        'fkooman\Rest\Plugin\Authentication\Basic\BasicAuthentication' => array(
+            'require' => false,
         ),
     )
 );
