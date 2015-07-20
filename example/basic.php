@@ -18,12 +18,14 @@
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
 use fkooman\Rest\Service;
-use fkooman\Rest\Plugin\Basic\BasicAuthentication;
-use fkooman\Rest\Plugin\Basic\BasicUserInfo;
+use fkooman\Rest\Plugin\Authentication\Basic\BasicAuthentication;
+use fkooman\Rest\Plugin\Authentication\Basic\BasicUserInfo;
 use fkooman\Http\Response;
 
 $service = new Service();
-$service->getPluginRegistry()->register(
+$service->getPluginRegistry()->registerDefaultPlugin(
+    // NOTE: for this to work the Authorization header needs to be passed 
+    // to PHP. See php-lib-rest README.md on how to accomplish this with Apache.
     new BasicAuthentication(
         function ($userId) {
             // NOTE: password is generated using the "password_hash()"
@@ -33,7 +35,7 @@ $service->getPluginRegistry()->register(
 
             // this function should return the password hash of the
             // requested userId or false if no such user exists
-            return $userId === 'foo' ? '$2y$10$ARD9Oq9xCzFANYGhv0mWxOsOallAS3qLQxLoOtzzRuLhv0U1IU9EO' : false;
+            return $userId === 'foo' ? '$2y$10$RtJL2NYZzOAqliJRRDmOjegV1qnGC526pj/hEB.qplJzZs9vEDj/O' : false;
         },
         array('realm' => 'My Secured Foo Service')
     )
