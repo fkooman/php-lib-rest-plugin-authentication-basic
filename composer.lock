@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4117dab8106a0c3c9fd844f961e2459b",
+    "hash": "a707b9013eaea94535e03027a08fa6e9",
     "packages": [
         {
             "name": "fkooman/json",

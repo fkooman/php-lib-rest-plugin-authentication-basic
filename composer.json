@@ -16,7 +16,7 @@
     "name": "fkooman/rest-plugin-authentication-basic",
     "require": {
         "fkooman/rest": "^1.0.0",
-	"fkooman/rest-plugin-authentication": "^1.0.0",
+        "fkooman/rest-plugin-authentication": "^1.0.0",
         "ircmaxell/password-compat": "~1.0",
         "php": ">=5.4"
     }
