@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.0
+- update to release versions of `fkooman/rest` and 
+  `fkooman/rest-plugin-authentication`
+
 ## 0.6.1
 - update spec file
 
