@@ -6,7 +6,7 @@
 
 Name:       php-%{composer_vendor}-%{composer_project}
 Version:    1.0.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Basic Authentication plugin for fkooman/rest
 
 Group:      System Environment/Libraries
@@ -32,6 +32,7 @@ Requires:   php-composer(symfony/class-loader)
 BuildRequires:  php-composer(symfony/class-loader)
 BuildRequires:  %{_bindir}/phpunit
 BuildRequires:  %{_bindir}/phpab
+BuildRequires:  php-password-compat >= 1.0.0
 BuildRequires:  php-composer(fkooman/rest) >= 1.0.0
 BuildRequires:  php-composer(fkooman/rest) < 2.0.0
 BuildRequires:  php-composer(fkooman/rest-plugin-authentication) >= 1.0.0
@@ -64,6 +65,9 @@ cp -pr src/* ${RPM_BUILD_ROOT}%{_datadir}/php
 %license COPYING
 
 %changelog
+* Thu Sep 03 2015 François Kooman <fkooman@tuxed.net> - 1.0.0-3
+- BuildRequire php-password-compat and also add it to the autoloader 
+
 * Thu Sep 03 2015 François Kooman <fkooman@tuxed.net> - 1.0.0-2
 - add autoloader
 - run tests during build

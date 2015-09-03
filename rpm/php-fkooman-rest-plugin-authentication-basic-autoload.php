@@ -20,3 +20,4 @@ $fedoraClassLoader->addPrefixes(array(
 
 require_once $vendorDir.'/fkooman/Rest/autoload.php';
 require_once $vendorDir.'/fkooman/Rest/Plugin/Authentication/autoload.php';
+require_once $vendorDir.'/password_compat/password.php';
