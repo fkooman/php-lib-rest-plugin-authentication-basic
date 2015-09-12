@@ -31,8 +31,11 @@ class BasicAuthentication implements AuthenticationPluginInterface
     /** @var array */
     private $authParams;
 
-    public function __construct(callable $retrieveHash, array $authParams = array())
+    public function __construct($retrieveHash, array $authParams = array())
     {
+        if(!is_callable($retrieveHash)) {
+            throw new InvalidArgumentException('');
+        }
         $this->retrieveHash = $retrieveHash;
         if (!array_key_exists('realm', $authParams)) {
             $authParams['realm'] = 'Protected Resource';
