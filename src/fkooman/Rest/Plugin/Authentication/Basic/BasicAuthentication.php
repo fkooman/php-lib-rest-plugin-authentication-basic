@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace fkooman\Rest\Plugin\Authentication\Basic;
 
 use fkooman\Http\Exception\BadRequestException;
 use fkooman\Http\Exception\UnauthorizedException;
 use fkooman\Http\Request;
 use fkooman\Rest\Plugin\Authentication\AuthenticationPluginInterface;
+use InvalidArgumentException;
 
 class BasicAuthentication implements AuthenticationPluginInterface
 {
@@ -33,8 +33,8 @@ class BasicAuthentication implements AuthenticationPluginInterface
 
     public function __construct($retrieveHash, array $authParams = array())
     {
-        if(!is_callable($retrieveHash)) {
-            throw new InvalidArgumentException('');
+        if (!is_callable($retrieveHash)) {
+            throw new InvalidArgumentException('argument must be callable');
         }
         $this->retrieveHash = $retrieveHash;
         if (!array_key_exists('realm', $authParams)) {

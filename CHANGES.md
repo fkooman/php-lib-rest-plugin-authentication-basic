@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.1
+- restore PHP 5.3 compatibility
+
 ## 1.0.0
 - update to release versions of `fkooman/rest` and 
   `fkooman/rest-plugin-authentication`

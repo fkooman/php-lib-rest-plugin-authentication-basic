@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace fkooman\Rest\Plugin\Authentication\Basic;
 
 use fkooman\Http\Request;
@@ -210,5 +209,14 @@ class BasicAuthenticationTest extends PHPUnit_Framework_TestCase
                 base64_encode('foo:bar')
             )
         );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage argument must be callable
+     */
+    public function testNonCallableParameter()
+    {
+        new BasicAuthentication('foo');
     }
 }
