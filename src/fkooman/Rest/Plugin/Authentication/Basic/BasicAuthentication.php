@@ -17,11 +17,11 @@
  */
 namespace fkooman\Rest\Plugin\Authentication\Basic;
 
-use fkooman\Http\Exception\BadRequestException;
 use fkooman\Http\Exception\UnauthorizedException;
 use fkooman\Http\Request;
 use fkooman\Rest\Plugin\Authentication\AuthenticationPluginInterface;
 use InvalidArgumentException;
+use fkooman\Rest\Service;
 
 class BasicAuthentication implements AuthenticationPluginInterface
 {
@@ -43,23 +43,65 @@ class BasicAuthentication implements AuthenticationPluginInterface
         $this->authParams = $authParams;
     }
 
-    public function getScheme()
-    {
-        return 'Basic';
-    }
-
-    public function getAuthParams()
-    {
-        return $this->authParams;
-    }
-
-    public function isAttempt(Request $request)
+    public function isAuthenticated(Request $request)
     {
         $authHeader = $request->getHeader('Authorization');
-        if (null === $authHeader) {
+        if (!self::isAttempt($authHeader)) {
+            // no attempt
             return false;
         }
-        if (!is_string($authHeader)) {
+        $encodedUserPass = substr($authHeader, 6);
+
+        // it is an attempt
+        $authUserPass = self::extractAuthUserPass($encodedUserPass);
+        if (false === $authUserPass) {
+            return false;
+        }
+
+        // retrieve the hashed password for given user
+        $passHash = call_user_func($this->retrieveHash, $authUserPass['authUser']);
+        if (false === $passHash) {
+            // user does not exist
+            return false;
+        }
+        if (!password_verify($authUserPass['authPass'], $passHash)) {
+            // invalid password
+            return false;
+        }
+
+        return new BasicUserInfo($authUserPass['authUser']);
+    }
+
+    public function requestAuthentication(Request $request)
+    {
+        $authHeader = $request->getHeader('Authorization');
+        if (self::isAttempt($authHeader)) {
+            // there was an attempt, and it failed, otherwise we wouldn't be
+            // here
+            $e = new UnauthorizedException(
+                'invalid_credentials',
+                'provided credentials not valid'
+            );
+        } else {
+            // no attempt
+            $e = new UnauthorizedException(
+                'no_credentials',
+                'credentials must be provided'
+            );
+        }
+        $e->addScheme('Basic', $this->authParams);
+
+        throw $e;
+    }
+
+    public function init(Service $service)
+    {
+        // NOP 
+    }
+
+    private static function isAttempt($authHeader)
+    {
+        if (null === $authHeader) {
             return false;
         }
         if (6 >= strlen($authHeader)) {
@@ -72,49 +114,6 @@ class BasicAuthentication implements AuthenticationPluginInterface
         return true;
     }
 
-    public function execute(Request $request, array $routeConfig)
-    {
-        if ($this->isAttempt($request)) {
-            // if there is an attempt, it MUST succeed
-            $authHeader = $request->getHeader('Authorization');
-            $authUserPass = self::extractUserPass(substr($authHeader, 6));
-            if (false === $authUserPass) {
-                // problem in getting the authUser and authPass
-                throw new BadRequestException('unable to decode authUser and/or authPass');
-            }
-            list($authUser, $authPass) = $authUserPass;
-
-            // retrieve the hashed password for given user
-            $passHash = call_user_func($this->retrieveHash, $authUser);
-            if (false === $passHash || !password_verify($authPass, $passHash)) {
-                $e = new UnauthorizedException(
-                    'invalid_credentials',
-                    'provided credentials not valid'
-                );
-                $e->addScheme('Basic', $this->authParams);
-                throw $e;
-            }
-
-            return new BasicUserInfo($authUser);
-        }
-
-        // if there is no attempt, and authentication is not required,
-        // then we can let it go :)
-        if (array_key_exists('require', $routeConfig)) {
-            if (!$routeConfig['require']) {
-                return;
-            }
-        }
-
-        $e = new UnauthorizedException(
-            'no_credentials',
-            'credentials must be provided'
-        );
-        $e->addScheme('Basic', $this->authParams);
-
-        throw $e;
-    }
-
     /**
      * Extract the authUser and authPass from the BASE64 encoded string.
      *
@@ -124,7 +123,7 @@ class BasicAuthentication implements AuthenticationPluginInterface
      * @return mixed array containing authUser and authPass or false if
      *               the decoding fails
      */
-    public static function extractUserPass($encodedString)
+    private static function extractAuthUserPass($encodedString)
     {
         if (0 >= strlen($encodedString)) {
             return false;
@@ -134,10 +133,14 @@ class BasicAuthentication implements AuthenticationPluginInterface
             return false;
         }
 
-        if (false === strpos($decodedString, ':')) {
+        $firstColonPos = strpos($decodedString, ':');
+        if (false === $firstColonPos) {
             return false;
         }
 
-        return explode(':', $decodedString, 2);
+        return array(
+            'authUser' => substr($decodedString, 0, $firstColonPos),
+            'authPass' => substr($decodedString, $firstColonPos + 1),
+        );
     }
 }

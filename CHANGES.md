@@ -1,5 +1,8 @@
 # Release History
 
+## 2.0.0 (...)
+- major API update for new `fkooman/rest-plugin-authentication`
+
 ## 1.0.1 (2015-09-12)
 - restore PHP 5.3 compatibility
 
