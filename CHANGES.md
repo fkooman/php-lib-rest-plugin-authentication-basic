@@ -1,5 +1,8 @@
 # Release History
 
+## 3.0.0 (2016-08-19)
+- update `fkooman/rest` and `fkooman/http` dependencies
+
 ## 2.0.0 (2015-11-19)
 - major API update for new `fkooman/rest-plugin-authentication`
 
